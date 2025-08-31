@@ -29,7 +29,7 @@ impl Command for Leave {
             itx.create_response(
                 &ctx.http,
                 CreateInteractionResponse::Message(
-                    CreateInteractionResponseMessage::new().content("Failed to leave the voice channel.").flags(InteractionResponseFlags::EPHEMERAL),
+                    CreateInteractionResponseMessage::new().content("Left the voice channel.").flags(InteractionResponseFlags::EPHEMERAL),
                 ),
             )
             .await
