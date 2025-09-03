@@ -9,7 +9,10 @@ pub async fn join(ctx: &Context, guild: GuildId, channel: ChannelId) -> anyhow::
     let call = manager.join(guild, channel).await?;
     {
         let mut lock = call.lock().await;
-        lock.add_global_event(CoreEvent::RtpPacket.into(), monitor::Monitor::new());
+        let monitor = monitor::Monitor::new(guild);
+        lock.add_global_event(CoreEvent::RtpPacket.into(), monitor.clone());
+        // Track speaking updates to map SSRC to UserId.
+        lock.add_global_event(CoreEvent::SpeakingStateUpdate.into(), monitor);
     }
     Ok(())
 }
