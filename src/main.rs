@@ -10,6 +10,7 @@ mod commands;
 mod db;
 mod utils;
 mod audio;
+mod volume_listener;
 
 struct Handler {
     pool: db::Pool,
@@ -35,6 +36,8 @@ impl EventHandler for Handler {
         if let Err(e) = res {
             error!(?e, "Slash‑command registration failed");
         }
+
+        volume_listener::start(ctx.http.clone());
     }
 
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
